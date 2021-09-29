@@ -1,0 +1,7 @@
+#!/bin/sh  
+
+echo "I: create admin user"
+adduser --gecos admin --disabled-login admin
+
+echo "I: set admin user password"
+echo "admin:admin" | chpasswd

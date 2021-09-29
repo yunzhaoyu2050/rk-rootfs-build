@@ -1,0 +1,22 @@
+[Unit]
+Description=Chromium app server
+After=keyboard-setup.service
+Before=systemd-time-wait-sync.service
+Before=networking.service
+Before=console-setup.service
+Before=systemd-resolved.service
+Before=systemd-rfkill.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+Environment="DISPLAY=:0"
+ExecStart=/bin/bash /usr/bin/chromium_startup
+ExecStop=/usr/bin/pkill -9 chromium
+KillMode=control-group
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
