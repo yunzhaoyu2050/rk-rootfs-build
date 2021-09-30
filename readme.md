@@ -1,4 +1,6 @@
-fork from https://github.com/rockchip-linux/rk-rootfs-build.git commit id:a63b0a30ab024c5555d58427d88561bf2a4bf7e4
+fork from https://github.com/rockchip-linux/rk-rootfs-build.git
+
+note: 1、以chromium应用自启动，删除原始桌面启动（测试阶段）
 
 ## Introduction
 
