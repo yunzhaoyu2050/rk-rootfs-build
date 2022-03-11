@@ -1,0 +1,13 @@
+#start
+[Unit]
+Description=Auto get ip client
+After=NetworkManager.service
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/dhclient
+ExecStop=killall dhclient
+
+[Install]
+WantedBy=multi-user.target
+#end

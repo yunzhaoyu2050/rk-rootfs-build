@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#
+# for test
+#
+
+# target address
+CHROMIUM_TARGET_ADDRESS="http://cp.rdc.pub/paving/playback.html?time=2020-09-27&token=NjJlMjAzOTYtOWVhNS00NjYyLTkzMmItNThlNjAyMDI5MjM5&project=LYLM6"
+
+# start chromium app
+/usr/bin/startx /usr/bin/chromium --disable-popup-blocking --disable-desktop-notifications --start-fullscreen --disable-plugins \
+    --start-maximized --window-size=800,1280 --window-position=0,0 \
+    --kiosk $CHROMIUM_TARGET_ADDRESS  -- 

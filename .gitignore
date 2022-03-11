@@ -1,0 +1,25 @@
+# o files
+
+# /
+binary/
+rootfs/
+*.gz
+*.img
+
+# ubuntu-build-service
+.build/
+auto/
+cache/
+chroot/
+config/
+binary/
+local/
+
+*.build-log.txt
+*.packages.install
+*.config.tar.bz2
+*.contents
+*.md5sums.txt
+*.packages
+*.sha1sums.txt
+*.tar.gz

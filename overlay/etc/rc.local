@@ -10,7 +10,7 @@
 # bits.
 #
 # By default this script does nothing.
-rk_wifi_init /dev/ttyS0
+rk_wifi_init /dev/ttyS8 # rk3568 board => ap6256_wifi/bt(ttyS8)
 
 # HACK: Prevent blueman from changing rfkill states
 rm /dev/rfkill

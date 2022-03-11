@@ -1,0 +1,16 @@
+#start
+[Unit]
+Description=Ap Bluetooth Module
+Before=bluetooth.service
+After=rc-local.service
+
+[Service]
+Type=forking
+User=root
+Group=root
+ExecStart=/bin/bash /etc/init.d/bt_init.sh start
+ExecStop=/bin/bash /etc/init.d/bt_init.sh stop
+
+[Install]
+WantedBy=multi-user.target
+#end
