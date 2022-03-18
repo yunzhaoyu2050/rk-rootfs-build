@@ -1,7 +1,3 @@
-fork from https://github.com/rockchip-linux/rk-rootfs-build.git
-
-note: 1、以chromium应用自启动，删除原始桌面启动（测试阶段）
-
 ## Introduction
 
 A set of shell scripts that will build GNU/Linux distribution rootfs image

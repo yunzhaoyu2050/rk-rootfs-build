@@ -5,6 +5,7 @@ binary/
 rootfs/
 *.gz
 *.img
+.vscode-ctags
 
 # ubuntu-build-service
 .build/

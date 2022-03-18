@@ -1,37 +1,64 @@
 #!/bin/bash
 
-# app user define
-RELEASE_VAL=buster # debian10-buster , debian9-stretch
-ARCH_VAL=arm64     # armhf arm64
-DEBUG_IS_ENABLE=false
-TARGET_VAL=base # desktop , base
-# --
+source setenv.sh -c rootfs.cfg
 
-chmod 775 *.sh
-export RELEASE="$RELEASE_VAL" ARCH="$ARCH_VAL" TARGET="$TARGET_VAL"
-echo -e "\033[36m>> creat RELEASE=$RELEASE_VAL ARCH=$ARCH_VAL TARGET="$TARGET_VAL" rootfs img.start. \033[0m"
+function clean_project() {
+  make clean -C "${PRDIR}/ubuntu-build-service/$RELEASE-$TARGET-$ARCH/" &&
+    info "clean ubuntu-build-service..."
+  rm -rf "${PRDIR}/"binary/ "${PRDIR}/"rootfs/ "${PRDIR}/"*.tar.gz "${PRDIR}/"*.img &&
+    info "clean binary/ and output files..."
+}
 
-echo ">> mk-base-debian.sh"
-./mk-base-debian.sh
-if [ $? -ne 0 ]; then
-  echo -e "\e[31m Failed mk-base-debian.sh. \e[0m"
-  exit 1
-fi
-
-if [ "$DEBUG_IS_ENABLE" != "true" ]; then
-  echo ">> mk-rootfs.sh"
-  ./mk-rootfs.sh
-  if [ $? -ne 0 ]; then
-    echo -e "\e[31m Failed mk-rootfs.sh. \e[0m"
+for a in "$@"; do
+  case $a in
+  -c | --clean | clean)
+    clean_project
     exit 1
-  fi
-else
-  #VERSION=debug ARCH=armhf ./mk-rootfs-buster.sh
-  exit 1
-fi
-echo ">> mk-image.sh"
-./mk-image.sh
-if [ $? -ne 0 ]; then
-  echo -e "\e[31m Failed mk-image.sh. \e[0m"
-  exit 1
-fi
+    ;;
+  -h | --help)
+    # usage_help
+    exit 0
+    ;;
+  *=*) ;;
+  *) ;;
+  esac
+done
+
+info_ "
+===========================
+rootfs config info:
+===========================
+ RELEASE: $RELEASE
+ ARCH: $ARCH
+ TARGET: $TARGET
+ VERSION: $VERSION
+==========================="
+
+debug "live build debian base rootfs..."
+"${PRDIR}/"mk-base-debian.sh
+[ $? -ne 0 ] && error " failed mk-base-debian.sh" && exit 1
+
+# check RELEASE and TODO:
+[ "$RELEASE" == "stretch" ] && warn "not currently supported 'stretch'" && exit 1
+
+br=$(git branch | grep "*" | awk -F' ' '{print $2}')
+[[ "$br" == "master" || "$br" == "main" ]] &&
+  br="mk"
+export BOARD_NAME="$br" # export env
+
+[ ! -f "${PRDIR}/"board/$br-rootfs-buster.sh ] &&
+  error "please edit the rootfs custom script of the specified development board" && exit 1
+[ -f "${PRDIR}/"mk-rootfs-buster.sh ] && rm "${PRDIR}/"mk-rootfs-buster.sh
+ln -ns "${PRDIR}/"board/$br-rootfs-buster.sh "${PRDIR}/"mk-rootfs-buster.sh
+[ $? -ne 0 ] && error "error create soft links" && exit 1
+
+debug "adapt to custom content..."
+"${PRDIR}/"mk-rootfs-$RELEASE.sh
+[ $? -ne 0 ] && error " failed mk-rootfs-$RELEASE.sh" && exit 1
+
+debug "create rootfs image..."
+"${PRDIR}/"mk-image.sh
+[ $? -ne 0 ] && error " failed mk-image.sh" && exit 1
+
+info "build rootfs image success"
+exit 0

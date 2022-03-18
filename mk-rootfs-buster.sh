@@ -49,13 +49,6 @@ sudo cp -rf overlay-debug/* $TARGET_ROOTFS_DIR/
 ## hack the serial
 sudo cp -f overlay/usr/lib/systemd/system/serial-getty@.service $TARGET_ROOTFS_DIR/lib/systemd/system/serial-getty@.service
 
-# adb
-if [ "$ARCH" == "armhf" ] && [ "$VERSION" == "debug" ]; then
-	sudo cp -rf overlay-debug/usr/local/share/adb/adbd-32 $TARGET_ROOTFS_DIR/usr/local/bin/adbd
-elif [ "$ARCH" == "arm64"  ]; then
-	sudo cp -rf overlay-debug/usr/local/share/adb/adbd-64 $TARGET_ROOTFS_DIR/usr/local/bin/adbd
-fi
-
 # bt/wifi firmware
 if [ "$ARCH" == "armhf" ]; then
     sudo cp overlay-firmware/usr/bin/brcm_patchram_plus1_32 $TARGET_ROOTFS_DIR/usr/bin/brcm_patchram_plus1
@@ -106,8 +99,7 @@ apt-get install -y busybox pm-utils triggerhappy
 cp /etc/Powermanager/triggerhappy.service  /lib/systemd/system/triggerhappy.service
 
 #---------------System--------------
-apt-get install -y git fakeroot devscripts cmake binfmt-support dh-make dh-exec pkg-kde-tools device-tree-compiler \
-bc cpio parted dosfstools mtools libssl-dev dpkg-dev isc-dhcp-client-ddns
+apt-get install -y cpio parted dosfstools isc-dhcp-client-ddns
 apt-get install -f -y
 
 #---------------Rga--------------
