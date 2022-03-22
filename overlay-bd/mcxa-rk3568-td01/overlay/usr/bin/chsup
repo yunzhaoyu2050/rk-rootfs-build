@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# target address
+CHROMIUM_TARGET_ADDRESS="http://v4.rdc.pub/transport/place?token=eyJpc1IiOjIsInJvbGVJZHMiOlsiMjQiXSwidXNlcm5hbWUiOiJTRExLR0xZIiwidXNlcklkIjozMzAsIlBWIjoyLCJvcmciOiJhMDExOSIsImlhdCI6MTY0NzMxNDc4NywiZXhwIjozMzE4MzMxNDc4N30.puTiHEoJsbhUQiMT9v9dVFeGG7eSMv5EdhhlEL5RiK4"
+
+# start chromium app
+/usr/bin/startx /usr/bin/chromium --start-fullscreen --no-sandbox --disable-popup-blocking \
+    --disable-desktop-notifications --disable-plugins \
+    --start-maximized --window-size=800,1280 --window-position=0,0 \
+    --kiosk $CHROMIUM_TARGET_ADDRESS --
