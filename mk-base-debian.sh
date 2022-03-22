@@ -26,11 +26,11 @@ cd "${PRDIR}/"ubuntu-build-service/$RELEASE-$TARGET-$ARCH
 
 debug "staring download..."
 
-# make clean
+make clean
 
-# ./configure
+./configure
 
-# make
+make
 
 if [ -e linaro-$RELEASE-alip-*.tar.gz ]; then
   sudo chmod 0666 linaro-$RELEASE-alip-*.tar.gz
