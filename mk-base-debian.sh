@@ -1,42 +1,42 @@
 #!/bin/bash -e
 
+source "${PRDIR}/"script/function.sh
+
 if [ "$RELEASE" == "stretch" ]; then
-	RELEASE='stretch'
+  RELEASE='stretch'
 elif [ "$RELEASE" == "buster" ]; then
-	RELEASE='buster'
+  RELEASE='buster'
 else
-	echo -e "\033[36m please input the os type,stretch or buster...... \033[0m"
+  error "please input the os type, stretch or buster..."
 fi
 
 if [ "$ARCH" == "armhf" ]; then
-	ARCH='armhf'
+  ARCH='armhf'
 elif [ "$ARCH" == "arm64" ]; then
-	ARCH='arm64'
+  ARCH='arm64'
 else
-	echo -e "\033[36m please input the os type,armhf or arm64...... \033[0m"
+  error "please input the os type, armhf or arm64..."
 fi
 
-if [ ! $TARGET ]; then
-	TARGET='desktop'
-fi
+[ ! $TARGET ] && TARGET='desktop'
+
+[ -e "${PRDIR}/"linaro-$RELEASE-alip-*.tar.gz ] && rm "${PRDIR}/"linaro-$RELEASE-alip-*.tar.gz
+
+cd "${PRDIR}/"ubuntu-build-service/$RELEASE-$TARGET-$ARCH
+
+debug "staring download..."
+
+# make clean
+
+# ./configure
+
+# make
 
 if [ -e linaro-$RELEASE-alip-*.tar.gz ]; then
-	rm linaro-$RELEASE-alip-*.tar.gz
-fi
-
-cd ubuntu-build-service/$RELEASE-$TARGET-$ARCH
-
-echo -e "\033[36m Staring Download...... \033[0m"
-
-make clean
-
-./configure
-
-make
-
-if [ -e linaro-$RELEASE-alip-*.tar.gz ]; then
-	sudo chmod 0666 linaro-$RELEASE-alip-*.tar.gz
-	mv linaro-$RELEASE-alip-*.tar.gz ../../
+  sudo chmod 0666 linaro-$RELEASE-alip-*.tar.gz
+  cp linaro-$RELEASE-alip-*.tar.gz ../../
 else
-	echo -e "\e[31m Failed to run livebuild, please check your network connection. \e[0m"
+  error "failed to run livebuild, please check your network connection."
 fi
+
+cd "${PRDIR}/"
