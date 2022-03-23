@@ -12,10 +12,29 @@ overlay-bd/
         overlay-debug/  -- debug files
         overlay-firmware/
 script/
-build.sh
-rootfs.cfg
+build.sh  -- automatic build scripts based on configuration files(rootfs)
+rootfs.cfg  -- user define rootfs config
 setenv.sh
 ```
+
+#### Rootfs Config
+file: rootfs.cfg
+```bash
+# rootfs config
+RELEASE=buster      # debian10-buster , debian9-stretch
+ARCH=arm64          # armhf arm64
+TARGET=base         # desktop , base
+VERSION=debug       # debug
+
+# kernel config
+KERNEL_PATH=../kernel
+```
+
+#### Usage
+1. edit rootfs.cfg
+2. add to overlay-bd/ custom development board rootfs file directory
+3. add to board/ custom rootfs file build command
+4. ./build.sh
 
 #### Official repository mirror
 
